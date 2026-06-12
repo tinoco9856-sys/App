@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Probador Virtual de Gafas AR — Visión Óptica</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- MediaPipe Face Mesh + Camera Utils -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="brand">VISIÓN <span>ÓPTICA</span></div>
+  <nav class="nav-links">
+    <a href="#">Inicio</a>
+    <a href="#">Colecciones</a>
+    <a href="#">Probador AR</a>
+    <a href="#">Contacto</a>
+  </nav>
+  <div class="tagline">Tecnología AR · MediaPipe Face Mesh</div>
+</header>
+
+<main>
+
+  <!-- Sección de cámara + canvas AR -->
+  <div id="camera-section">
+    <video id="videoEl" autoplay muted playsinline></video>
+    <canvas id="overlayCanvas"></canvas>
+
+    <div id="status-badge">
+      <span class="dot"></span>
+      <span id="status-text">Cámara inactiva</span>
+    </div>
+
+    <div id="landmark-info">
+      <div id="li-nose">Punto 6  (puente nariz): —</div>
+      <div id="li-left">Punto 234 (sien izq): —</div>
+      <div id="li-right">Punto 454 (sien der): —</div>
+      <div id="li-dist">Distancia entre sienes: —</div>
+      <div id="li-angle">Ángulo Roll: —</div>
+      <div id="li-size">Ancho × Alto gafas: —</div>
+    </div>
+  </div>
+
+  <!-- Sidebar: catálogo + controles -->
+  <div id="sidebar">
+    <div class="sidebar-section-title">Elige tu modelo</div>
+
+    <!-- Modelo 0: Aviador -->
+    <div class="glass-card active" data-idx="0" onclick="selectGlass(0)">
+      <div class="g-name">Aviador Dorado</div>
+      <div class="g-desc">Clásico metal dorado</div>
+      <div class="g-price">S/ 180</div>
+      <div class="glass-preview"><canvas id="prev0" width="188" height="40"></canvas></div>
+    </div>
+
+    <!-- Modelo 1: Retro -->
+    <div class="glass-card" data-idx="1" onclick="selectGlass(1)">
+      <div class="g-name">Retro Carey</div>
+      <div class="g-desc">Montura gruesa tortoiseshell</div>
+      <div class="g-price">S/ 150</div>
+      <div class="glass-preview"><canvas id="prev1" width="188" height="40"></canvas></div>
+    </div>
+
+    <!-- Modelo 2: Cat-eye -->
+    <div class="glass-card" data-idx="2" onclick="selectGlass(2)">
+      <div class="g-name">Cat-Eye</div>
+      <div class="g-desc">Elegancia felina morada</div>
+      <div class="g-price">S/ 200</div>
+      <div class="glass-preview"><canvas id="prev2" width="188" height="40"></canvas></div>
+    </div>
+
+    <!-- Modelo 3: Wayfarer -->
+    <div class="glass-card" data-idx="3" onclick="selectGlass(3)">
+      <div class="g-name">Wayfarer</div>
+      <div class="g-desc">Icónico estilo americano</div>
+      <div class="g-price">S/ 165</div>
+      <div class="glass-preview"><canvas id="prev3" width="188" height="40"></canvas></div>
+    </div>
+
+    <!-- Controles -->
+    <div id="controls">
+      <button id="startBtn" onclick="startCamera()">
+        📷 Activar cámara
+      </button>
+
+      <div class="control-row">
+        <label>Ajuste vertical</label>
+        <input type="range" id="offsetSlider" min="-60" max="40" value="-10" step="1"
+               oninput="updateOffset(this.value)">
+        <span class="val" id="offset-val">-10</span>
+      </div>
+
+      <div class="control-row">
+        <label>Opacidad</label>
+        <input type="range" id="opacitySlider" min="20" max="100" value="90" step="1"
+               oninput="updateOpacity(this.value)">
+        <span class="val" id="opacity-val">90%</span>
+      </div>
+
+      <label class="debug-toggle">
+        <input type="checkbox" id="debugCheck" onchange="toggleDebug(this.checked)">
+        Mostrar landmarks
+      </label>
+    </div>
+  </div>
+
+</main>
+<script src="funcion.js"></script>
+<footer>
+  Probador Virtual AR · MediaPipe Face Mesh · Puntos 6 · 234 · 454 · Algoritmo Roll
+</footer>
+
+</body>
+</html>

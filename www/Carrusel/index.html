@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Galería Gestual CoverFlow</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Galería Gestual · CoverFlow</h1>
+<video id="cam" autoplay playsinline muted></video>
+<canvas id="monitor"></canvas>
+<div id="hand-indicator">👋</div>
+
+<div id="carousel">
+  <div class="card"><span class="emoji">🌅</span><span class="label">Amanecer</span></div>
+  <div class="card"><span class="emoji">🏔️</span><span class="label">Montaña</span></div>
+  <div class="card"><span class="emoji">🌊</span><span class="label">Océano</span></div>
+  <div class="card"><span class="emoji">🌿</span><span class="label">Selva</span></div>
+  <div class="card"><span class="emoji">🌌</span><span class="label">Cosmos</span></div>
+</div>
+
+<div id="dots">
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+</div>
+
+<div id="status">Iniciando…</div>
+
+<!-- UN solo bundle que incluye TF core + WebGL + todas las dependencias -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.2.0/dist/tf.min.js"></script>
+<!-- MoveNet compatible con TF 4.2.0 -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection@2.1.0/dist/pose-detection.min.js"></script>
+<script src="function.js"></script>
+</body>
+</html>

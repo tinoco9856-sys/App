@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🫧 Cazador de Burbujas</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="wrap">
+
+  <!-- REQ 1: Video cámara (fondo espejo) -->
+  <video id="webcam" autoplay playsinline muted></video>
+
+  <!-- REQ 1: Canvas del juego superpuesto -->
+  <canvas id="gc"></canvas>
+
+  <!-- HUD -->
+  <div id="hud">
+    <div class="hbox" id="hud-score">
+      <div class="hlabel">Puntos</div><div class="hval" id="v-score">0</div>
+    </div>
+    <div class="hbox" id="hud-lives">
+      <div class="hlabel">Vidas</div><div class="hval" id="v-lives">❤️❤️❤️</div>
+    </div>
+    <div class="hbox" id="hud-timer">
+      <div class="hlabel">Tiempo</div><div class="hval" id="v-timer">60</div>
+    </div>
+    <div class="hbox" id="hud-record">
+      <div class="hlabel">Récord</div><div class="hval" id="v-record">0</div>
+    </div>
+  </div>
+
+  <div id="status">Cargando…</div>
+  <div id="tip">✋ Dedos índice y medio para reventar burbujas</div>
+  <div id="cd">3</div>
+
+  <!-- PANTALLA INICIO -->
+  <div class="screen" id="s-start">
+    <div class="icon">🫧</div>
+    <h1>Cazador de Burbujas</h1>
+    <p>Mueve tus manos frente a la cámara para reventar las burbujas.<br>
+       Cada burbuja que caiga te quita una ❤️.<br>
+       Tienes <strong style="color:#7fffb0">60 seg</strong> y
+               <strong style="color:#ff6b8a">3 vidas</strong>.</p>
+    <p style="font-size:12px;color:rgba(160,200,255,.38);margin-top:6px;">
+       Sin cámara → juega con el ratón o táctil</p>
+    <button class="btn btn-primary"   onclick="doCountdown()">¡Jugar!</button>
+    <button class="btn btn-secondary" onclick="goRecords()">🏆 Récords</button>
+  </div>
+
+  <!-- PANTALLA GAME OVER -->
+  <div class="screen hidden" id="s-over">
+    <h2 id="go-title">¡Tiempo agotado!</h2>
+    <div class="rgrid">
+      <div class="rcell"><div class="rl">Puntos</div>  <div class="rv" id="go-pts">0</div></div>
+      <div class="rcell"><div class="rl">Burbujas</div><div class="rv" id="go-bub">0</div></div>
+      <div class="rcell"><div class="rl">Tiempo</div>  <div class="rv" id="go-t">0s</div></div>
+    </div>
+    <p id="go-msg" style="color:#ffd97e;font-size:16px;font-weight:700;margin-top:10px;"></p>
+    <button class="btn btn-primary"   onclick="doCountdown()">Jugar de nuevo</button>
+    <button class="btn btn-secondary" onclick="goRecords()">🏆 Ver Récords</button>
+  </div>
+
+  <!-- PANTALLA RÉCORDS -->
+  <div class="screen hidden" id="s-records">
+    <div style="font-size:50px;margin-bottom:8px">🏆</div>
+    <h1 style="margin-bottom:14px">Mejores Récords</h1>
+    <table id="rec-tbl">
+      <thead><tr><th>#</th><th>Puntos</th><th>Burbujas</th><th>Tiempo</th></tr></thead>
+      <tbody id="rec-body"></tbody>
+    </table>
+    <button class="btn btn-secondary" onclick="showScreen('s-start')" style="margin-top:14px">← Volver</button>
+    <button class="btn btn-secondary" onclick="clearRec()" style="margin-top:6px;font-size:11px;opacity:.5">Borrar récords</button>
+  </div>
+
+</div><!-- #wrap -->
+
+<!-- ══ REQ 2: Librerías MediaPipe Hands + Camera Utils ══ -->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1646424915/hands.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3.1675466862/camera_utils.js" crossorigin="anonymous"></script>
+<script src="funcion.js"></script>
+</body>
+</html>

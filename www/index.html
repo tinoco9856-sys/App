@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis Proyectos</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: sans-serif;
+      background: #f5f5f5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    p  { color: #666; margin-bottom: 2rem; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      width: 100%;
+      max-width: 700px;
+    }
+    a.card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      text-decoration: none;
+      color: #333;
+      border: 1px solid #e0e0e0;
+      transition: transform 0.15s, box-shadow 0.15s;
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+    a.card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    .emoji { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+  <h1>Mis Proyectos</h1>
+  <p>Elige una sección para explorarla</p>
+
+  <div class="grid">
+    <a class="card" href="Carrusel/index.html">
+      <span class="emoji">🖼️</span>
+      Carrusel
+    </a>
+    <a class="card" href="GAFAS/index.html">
+      <span class="emoji">👓</span>
+      Gafas
+    </a>
+    <a class="card" href="Juego/index.html">
+      <span class="emoji">🎮</span>
+      Juego
+    </a>
+    <a class="card" href="Piano/index.html">
+      <span class="emoji">🎹</span>
+      Piano
+    </a>
+    <a class="card" href="Pizarra/index.html">
+      <span class="emoji">✏️</span>
+      Pizarra
+    </a>
+  </div>
+</body>
+</html>

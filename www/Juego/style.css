@@ -1,0 +1,153 @@
+/* ── Reset ── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: #05050f;
+  overflow: hidden;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  user-select: none;
+}
+
+/* ── Contenedor raíz ── */
+#wrap { position:relative; width:100vw; height:100vh; }
+
+/* ── REQ 1: Video cámara – fondo espejo, opacidad reducida ── */
+#webcam {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1);   /* modo espejo */
+  opacity: 0.42;
+  pointer-events: none;
+}
+
+/* ── REQ 1: Canvas del juego superpuesto ── */
+#gc {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+}
+
+/* ════════ HUD ════════ */
+#hud {
+  position: absolute;
+  top: 14px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; gap: 12px; align-items: stretch;
+  z-index: 20; pointer-events: none;
+}
+.hbox {
+  background: rgba(6,6,22,0.82);
+  border: 1px solid rgba(110,170,255,0.25);
+  border-radius: 13px;
+  padding: 8px 18px;
+  text-align: center;
+  min-width: 88px;
+  backdrop-filter: blur(8px);
+}
+.hlabel {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(160,200,255,0.5);
+  margin-bottom: 3px;
+}
+/* REQ 1: Marcador "Puntos" – esquina superior derecha */
+#hud-score  .hval { font-size:28px; font-weight:700; color:#7ed4ff; }
+#hud-lives  .hval { font-size:18px; color:#ff6b8a; letter-spacing:3px; }
+#hud-timer  .hval { font-size:28px; font-weight:700; color:#7fffb0; }
+#hud-record .hval { font-size:20px; font-weight:700; color:#ffd97e; }
+
+/* ── Barra de estado ── */
+#status {
+  position: absolute;
+  bottom: 14px; left: 16px;
+  font-size: 12px;
+  color: rgba(160,200,255,0.5);
+  background: rgba(6,6,22,0.55);
+  padding: 5px 12px;
+  border-radius: 8px;
+  border: 0.5px solid rgba(110,170,255,0.12);
+  z-index: 20; pointer-events: none;
+}
+#tip {
+  position: absolute;
+  bottom: 14px; right: 16px;
+  font-size: 12px;
+  color: rgba(160,200,255,0.38);
+  z-index: 20; pointer-events: none;
+}
+
+/* ════════ PANTALLAS ════════ */
+.screen {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: rgba(4,4,16,0.92);
+  z-index: 50;
+}
+.screen.hidden { display: none; }
+.screen h1 { font-size:36px; font-weight:800; color:#7ed4ff; margin-bottom:8px; }
+.screen h2 { font-size:24px; font-weight:700; color:#ff6b8a; margin-bottom:10px; }
+.screen p  { font-size:14px; color:rgba(180,220,255,0.7); line-height:1.75;
+             text-align:center; max-width:420px; margin-bottom:4px; }
+.icon { font-size:62px; margin-bottom:14px; animation: float 2.8s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+
+.btn {
+  margin-top: 14px; padding: 12px 40px;
+  border: none; border-radius: 50px;
+  font-size: 16px; font-weight: 700;
+  cursor: pointer; transition: transform .12s, box-shadow .12s;
+}
+.btn:hover { transform: scale(1.05); }
+.btn-primary {
+  background: linear-gradient(135deg,#1a6fff,#00cfff);
+  color: #fff;
+  box-shadow: 0 0 28px rgba(0,150,255,.35);
+}
+.btn-secondary {
+  background: rgba(255,255,255,0.06);
+  color: rgba(180,220,255,0.8);
+  border: 1px solid rgba(110,170,255,0.22);
+  margin-top: 8px; padding: 9px 28px; font-size:13px;
+}
+
+/* Cuadrícula de resultado */
+.rgrid { display:flex; gap:18px; margin:12px 0 4px; }
+.rcell {
+  text-align: center;
+  background: rgba(255,255,255,0.04);
+  border: 0.5px solid rgba(110,170,255,0.18);
+  border-radius: 10px;
+  padding: 9px 18px;
+}
+.rl { font-size:10px; letter-spacing:.12em; text-transform:uppercase;
+      color:rgba(160,200,255,0.5); margin-bottom:3px; }
+.rv { font-size:24px; font-weight:700; color:#7ed4ff; }
+
+/* Tabla récords */
+#rec-tbl { width:320px; border-collapse:collapse; margin:12px 0 4px; font-size:14px; }
+#rec-tbl th {
+  color:rgba(160,200,255,0.5); font-weight:600; font-size:10px;
+  letter-spacing:.12em; text-transform:uppercase; padding:4px 10px;
+  border-bottom: 0.5px solid rgba(110,170,255,0.16);
+}
+#rec-tbl td {
+  padding:6px 10px; color:rgba(200,230,255,0.82);
+  text-align:center; border-bottom: 0.5px solid rgba(110,170,255,0.07);
+}
+#rec-tbl tr:first-child td { color:#ffd97e; font-weight:700; }
+
+/* Cuenta atrás */
+#cd {
+  position: absolute; inset:0;
+  display: flex; align-items:center; justify-content:center;
+  font-size: 130px; font-weight:900;
+  color: rgba(126,212,255,0.88);
+  text-shadow: 0 0 55px rgba(0,180,255,.5);
+  z-index: 40; pointer-events:none;
+  opacity: 0; transition: opacity .2s;
+}

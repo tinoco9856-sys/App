@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Piano Gestual 10 Dedos</title>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div id="sbar">
+  <div id="sdot"></div>
+  <span id="stxt">Haz clic en "Iniciar" para activar la cámara</span>
+</div>
+
+<div id="mid">
+  <!-- Cámara -->
+  <div id="cambox">
+    <video id="video" autoplay muted playsinline></video>
+    <canvas id="overlay"></canvas>
+    <div id="startov">
+      <div id="stitle">🎹 Piano Gestual 10 Dedos</div>
+      <button id="sbtn">Iniciar cámara</button>
+      <div style="font-size:10px;color:rgba(255,255,255,.25);margin-top:4px;">o clic en los dedos / estrofas</div>
+    </div>
+  </div>
+
+  <!-- Nota activa -->
+  <div id="info">
+    <div id="anote">—</div>
+    <div id="aname">Baja un dedo</div>
+    <div id="adesc">
+      ✋ Mano izquierda = estrofas 1–5<br>
+      🤚 Mano derecha = estrofas 6–10<br>
+      🖱️ Clic en las tarjetas también funciona
+    </div>
+  </div>
+
+  <!-- Panel de dedos -->
+  <div id="handpanel">
+    <div class="hrow">
+      <div class="hlabel">Izq</div>
+      <div class="fdig" id="fd0" style="--fc:#FF6B6B" onclick="triggerFinger(0)"><div class="fi">M</div><div class="fn">1</div></div>
+      <div class="fdig" id="fd1" style="--fc:#FFB347" onclick="triggerFinger(1)"><div class="fi">A</div><div class="fn">2</div></div>
+      <div class="fdig" id="fd2" style="--fc:#FFE066" onclick="triggerFinger(2)"><div class="fi">M</div><div class="fn">3</div></div>
+      <div class="fdig" id="fd3" style="--fc:#66FF99" onclick="triggerFinger(3)"><div class="fi">I</div><div class="fn">4</div></div>
+      <div class="fdig" id="fd4" style="--fc:#5DCAA5" onclick="triggerFinger(4)"><div class="fi">P</div><div class="fn">5</div></div>
+    </div>
+    <div class="hrow">
+      <div class="hlabel">Der</div>
+      <div class="fdig" id="fd5" style="--fc:#5DCAA5" onclick="triggerFinger(5)"><div class="fi">P</div><div class="fn">6</div></div>
+      <div class="fdig" id="fd6" style="--fc:#66CCFF" onclick="triggerFinger(6)"><div class="fi">I</div><div class="fn">7</div></div>
+      <div class="fdig" id="fd7" style="--fc:#B47FFF" onclick="triggerFinger(7)"><div class="fi">M</div><div class="fn">8</div></div>
+      <div class="fdig" id="fd8" style="--fc:#FF80BF" onclick="triggerFinger(8)"><div class="fi">A</div><div class="fn">9</div></div>
+      <div class="fdig" id="fd9" style="--fc:#FF6B6B" onclick="triggerFinger(9)"><div class="fi">M</div><div class="fn">10</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Estrofas -->
+<div id="strfas"></div>
+
+<div id="foot">
+  <div class="fi2"><div class="fid" style="background:#FFE066"></div>Dedo abajo = suena la estrofa</div>
+  <div class="fi2"><div class="fid" style="background:#5DCAA5"></div>10 dedos = 10 estrofas distintas</div>
+  <div class="fi2"><div class="fid" style="background:#888"></div>Clic funciona sin cámara</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+<script src="funcion.js"></script>
+
+</body>
+</html>

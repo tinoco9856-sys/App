@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pizarra Digital — Izq dibuja / Der controla</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<h1>Pizarra Digital · Mano Izquierda = Dibujo · Mano Derecha = Control</h1>
+
+<div id="container">
+  <video id="video" playsinline muted></video>
+  <canvas id="drawCanvas"></canvas>
+
+  <div class="finger-cursor" id="cursorLeft"></div>
+  <div class="finger-cursor" id="cursorRight"></div>
+
+  <!-- HUD -->
+  <div id="hud">
+
+    <!-- Panel izquierdo: solo dibuja -->
+    <div class="hand-panel">
+      <div class="hand-title">✏ Mano izquierda — Pincel</div>
+      <div class="hand-mode" id="modeLeft" style="color:#4af7a0;">— Standby</div>
+      <div class="color-row" id="colorsLeft"></div>
+      <div class="brush-row">
+        <span class="brush-label">grosor</span>
+        <div class="brush-bar-bg">
+          <div class="brush-bar-fill" id="brushBarLeft" style="width:15%;"></div>
+        </div>
+        <span class="brush-val" id="brushValLeft">4px</span>
+      </div>
+    </div>
+
+    <!-- Panel derecho: control -->
+    <div class="hand-panel">
+      <div class="hand-title">🎛 Mano derecha — Control</div>
+      <div class="hand-mode" id="modeRight" style="color:#ff8833;">— Standby</div>
+      <div class="panel-sep"></div>
+      <div class="gesture-list" id="gestureList">
+        <div id="gErase">🤏 Pinza → borrador</div>
+        <div id="gColor">✌ Índice+medio → color</div>
+        <div id="gResize">🖖 3 dedos → grosor</div>
+        <div id="gStandby">— Sin gesto → reposo</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="gestureTip">✏ Izquierda dibuja · 🎛 Derecha controla color, grosor y borrador</div>
+
+  <div id="toolbar">
+    <button class="tb-btn" id="btnUndo">↩ Deshacer</button>
+    <div class="tb-sep"></div>
+    <button class="tb-btn" id="btnClear">🗑 Limpiar</button>
+    <div class="tb-sep"></div>
+    <button class="tb-btn" id="btnSave">💾 Guardar PNG</button>
+  </div>
+
+  <!-- Overlay inicio -->
+  <div id="startOverlay">
+    <h2>Pizarra Digital de Dos Manos</h2>
+    <p>Cada mano tiene un rol fijo. La izquierda dibuja, la derecha controla todo lo demás.</p>
+    <div class="role-grid">
+      <div class="role-card">
+        <div class="rc-title" style="color:#4af7a0;">✏ Mano izquierda</div>
+        <div class="rc-item"><span>☝</span>Índice arriba → dibuja</div>
+        <div class="rc-item"><span>✋</span>Cualquier otro gesto → pausa</div>
+        <div class="rc-item" style="color:#333; font-size:10px; margin-top:4px;">El color y grosor los controla la mano derecha</div>
+      </div>
+      <div class="role-card">
+        <div class="rc-title" style="color:#ff8833;">🎛 Mano derecha</div>
+        <div class="rc-item"><span>🤏</span>Pinza → borrador</div>
+        <div class="rc-item"><span>✌</span>Índice+medio → siguiente color</div>
+        <div class="rc-item"><span>🖖</span>3 dedos → grosor por apertura</div>
+      </div>
+    </div>
+    <button id="startBtn">Activar cámara</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+<script src="funcion.js"></script>
+</body>
+</html>
