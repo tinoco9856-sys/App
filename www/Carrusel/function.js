@@ -12,15 +12,21 @@ let frameCount = 0;
 const cam = document.getElementById('cam');
 const monitor = document.getElementById('monitor');
 const mCtx = monitor.getContext('2d');
+
 const statusEl = document.getElementById('status');
 const handEl = document.getElementById('hand-indicator');
+
 const cards = document.querySelectorAll('.card');
 const dots = document.querySelectorAll('.dot');
-const startBtn = document.getElementById('startCamera');
 
 function updateCarousel() {
-    cards.forEach((c, i) => c.classList.toggle('central', i === currentIndex));
-    dots.forEach((d, i) => d.classList.toggle('active', i === currentIndex));
+    cards.forEach((c, i) =>
+        c.classList.toggle('central', i === currentIndex)
+    );
+
+    dots.forEach((d, i) =>
+        d.classList.toggle('active', i === currentIndex)
+    );
 }
 
 function triggerSlide(dir) {
@@ -42,16 +48,17 @@ function triggerSlide(dir) {
     handEl.classList.add('show');
 
     statusEl.textContent =
-        dir === 'left'
-            ? '← Izquierda'
-            : 'Derecha →';
-
+        dir === 'left' ? '← Izquierda' : 'Derecha →';
     statusEl.classList.add('active');
 
     setTimeout(() => {
         isCooling = false;
+
         handEl.classList.remove('show');
-        statusEl.textContent = 'Extiende tu mano para navegar';
+
+        statusEl.textContent =
+            'Extiende tu mano para navegar';
+
         statusEl.classList.remove('active');
     }, COOLDOWN);
 }
@@ -73,7 +80,6 @@ function processGesture(keypoints) {
 
     const cx = nose.x;
 
-    // Mano derecha cruza hacia la izquierda
     if (
         rWrist &&
         rWrist.score > 0.3 &&
@@ -83,7 +89,6 @@ function processGesture(keypoints) {
         return;
     }
 
-    // Mano izquierda cruza hacia la derecha
     if (
         lWrist &&
         lWrist.score > 0.3 &&
@@ -94,10 +99,11 @@ function processGesture(keypoints) {
 }
 
 function drawKeypoints(keypoints) {
-    const nose = keypoints.find(k => k.name === 'nose');
+    const nose = keypoints.find(
+        k => k.name === 'nose'
+    );
 
     keypoints.forEach(kp => {
-
         if (
             !['nose', 'left_wrist', 'right_wrist'].includes(kp.name) ||
             kp.score < 0.3
@@ -119,7 +125,9 @@ function drawKeypoints(keypoints) {
             mCtx.beginPath();
             mCtx.moveTo(nose.x, nose.y);
             mCtx.lineTo(kp.x, kp.y);
-            mCtx.strokeStyle = 'rgba(167,139,250,0.4)';
+
+            mCtx.strokeStyle =
+                'rgba(167,139,250,0.4)';
             mCtx.lineWidth = 1.5;
             mCtx.stroke();
         }
@@ -127,43 +135,42 @@ function drawKeypoints(keypoints) {
 }
 
 async function loop() {
-
-    if (cam.readyState >= 2) {
-        mCtx.clearRect(0, 0, VIDEO_W, VIDEO_H);
-        mCtx.drawImage(cam, 0, 0, VIDEO_W, VIDEO_H);
-    }
+    mCtx.drawImage(
+        cam,
+        0,
+        0,
+        VIDEO_W,
+        VIDEO_H
+    );
 
     if (detector && frameCount % SKIP === 0) {
-
         try {
-
-            const poses = await detector.estimatePoses(cam, {
-                flipHorizontal: false
-            });
+            const poses =
+                await detector.estimatePoses(cam, {
+                    flipHorizontal: false
+                });
 
             if (poses.length > 0) {
-                processGesture(poses[0].keypoints);
-                drawKeypoints(poses[0].keypoints);
-            }
+                processGesture(
+                    poses[0].keypoints
+                );
 
-        } catch (error) {
-            console.error(error);
-        }
+                drawKeypoints(
+                    poses[0].keypoints
+                );
+            }
+        } catch (_) {}
     }
 
     frameCount++;
     requestAnimationFrame(loop);
 }
 
-async function iniciarSistema() {
+(async () => {
+    updateCarousel();
 
-    startBtn.disabled = true;
-
+    // 1. Cámara
     try {
-
-        statusEl.textContent =
-            'Solicitando permiso para la cámara...';
-
         const stream =
             await navigator.mediaDevices.getUserMedia({
                 video: {
@@ -187,58 +194,44 @@ async function iniciarSistema() {
         monitor.height = VIDEO_H;
 
         statusEl.textContent =
-            'Cámara lista. Cargando IA...';
-
-    } catch (error) {
-
-        console.error(error);
-
+            'Cámara lista. Cargando IA…';
+    } catch (e) {
         statusEl.textContent =
-            '❌ Debes permitir el acceso a la cámara';
-
-        startBtn.disabled = false;
+            'Error: permite el acceso a la cámara.';
         return;
     }
 
+    // 2. Modelo IA
     try {
-
         try {
             await tf.setBackend('webgl');
-        } catch {
+        } catch (_) {
             await tf.setBackend('cpu');
         }
 
         await tf.ready();
 
-        detector = await poseDetection.createDetector(
-            poseDetection.SupportedModels.MoveNet,
-            {
-                modelType:
-                    poseDetection.movenet.modelType
-                        .SINGLEPOSE_LIGHTNING
-            }
-        );
+        detector =
+            await poseDetection.createDetector(
+                poseDetection.SupportedModels.MoveNet,
+                {
+                    modelType:
+                        poseDetection.movenet
+                            .modelType
+                            .SINGLEPOSE_LIGHTNING
+                }
+            );
 
         statusEl.textContent =
-            '✅ Extiende tu mano para navegar';
-
-        updateCarousel();
-
-        loop();
-
-        startBtn.style.display = 'none';
-
-    } catch (error) {
-
-        console.error(error);
-
+            'Extiende tu mano para navegar';
+    } catch (e) {
         statusEl.textContent =
-            '❌ Error al cargar el modelo IA';
+            'Error al cargar el modelo IA: ' +
+            e.message;
 
-        startBtn.disabled = false;
+        console.error(e);
+        return;
     }
-}
 
-updateCarousel();
-
-startBtn.addEventListener('click', iniciarSistema);
+    loop();
+})();
