@@ -1,3 +1,4 @@
+console.log("VERSION NUEVA CARGADA");
 const VIDEO_W = 320;
 const VIDEO_H = 240;
 const SKIP = 3;
